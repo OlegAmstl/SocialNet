@@ -14,25 +14,18 @@ class LoginForm(forms.Form):
 
 
 class UserRegistrationForm(forms.ModelForm):
-    '''
-    Форма регистрации нового пользователя.
-    '''
-
-    password = forms.CharField(widget=forms.PasswordInput,
-                               label='Пароль')
-    password2 = forms.CharField(widget=forms.PasswordInput,
-                                label='Повторите пароль')
+    password = forms.CharField(label='Пароль',
+                               widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Повторите пароль',
+                                widget=forms.PasswordInput)
 
     class Meta:
-
         model = User
         fields = ['username', 'first_name', 'email']
 
-    def clean_password(self):
-        '''
-        Проверка на соответствие паролей.
-        '''
+    def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Пароли не совпадают.')
         return cd['password2']
+
