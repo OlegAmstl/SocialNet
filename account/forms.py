@@ -27,3 +27,12 @@ class UserRegistrationForm(forms.ModelForm):
 
         model = User
         fields = ['username', 'first_name', 'email']
+
+    def clean_password(self):
+        '''
+        Проверка на соответствие паролей.
+        '''
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('Пароли не совпадают.')
+        return cd['password2']
