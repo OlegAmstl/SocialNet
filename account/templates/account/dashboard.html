@@ -4,5 +4,7 @@
 
 {% block content %}
   <h1>Dashboard</h1>
-  <p>Добро пожаловать!</p>
+  <p>Добро пожаловать! Вы можете
+    <a href="{% url 'edit' %}">редактировать свой профиль</a>
+или <a href="{% url 'password_change' %}">изменить пароль</a>.</p>
 {% endblock %}
