@@ -4,7 +4,17 @@
 
 {% block content %}
   <h1>Dashboard</h1>
-  <p>Добро пожаловать! Вы можете
-    <a href="{% url 'edit' %}">редактировать свой профиль</a>
-или <a href="{% url 'password_change' %}">изменить пароль</a>.</p>
+  {% with total_images_created=request.user.images_created.count %}
+    <p>Добро пожаловать на вашу стену.
+    У вас есть {{ total_images_created }} изображение{{ total_images_
+    created|pluralize }}.
+    </p>
+  {% endwith %}
+  <p>Перетащите кнопку в панель закладок браузера, чтобы добовлять изображения с других сайтов →
+  <a href="javascript:{% include "bookmarklet_launcher.js" %}"
+  class="button">В закладки!</a>
+  </p>
+    <p>Вы можете отредактировать свой <a href="{% url "edit" %}">профиль</a> или <a href="{% url
+    "password_change" %}">изменить пароль</a>.
+    </p>
 {% endblock %}
