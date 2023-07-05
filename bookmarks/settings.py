@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -132,3 +133,8 @@ SOCIAL_AUTH_PIPELINE = [
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '733011363771-f9ao6sm9pkb7rrnqn8rsumco5v9gb550.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GOCSPX-hVSbYsU29HoGith6SnAh9Wofxxxx'
+
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda u: reverse_lazy('user_detail',
+                                        args=[u.username])
+}
