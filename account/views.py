@@ -8,6 +8,7 @@ from .forms import LoginForm, UserRegistrationForm, \
     UserEditForm, ProfileEditForm
 from .models import Profile, Contact
 from actions.utils import create_action
+from actions.models import Action
 
 User = get_user_model()
 
@@ -41,7 +42,17 @@ def dashboard(request):
     '''
     Представление главной страницы.
     '''
-    return render(request, 'account/dashboard.html', {'section': 'dashboard'})
+    # По умолчанию показывать все действия
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        # Если пользователь подписан на других,
+        # то показать только их действия
+        actions = actions.filter(user_id__in=following_ids)
+    actions = actions.select_related(
+        'user', 'user__profile')[:10].prefetch_related('target')[:10]
+    return render(request, 'account/dashboard.html',
+                  {'section': 'dashboard', 'actions': actions})
 
 
 def register(request):
